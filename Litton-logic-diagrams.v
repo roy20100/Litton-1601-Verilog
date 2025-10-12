@@ -1,5 +1,7 @@
 /*still need connection*/
-wire L20,_L20,L30,_L30,L50,_L50,L51,_L51,L53,_L53,_L60;
+reg L50,_L50,L51,_L51,L53,_L53,L60,_L60;
+initial {L50,L51,L53,L60}=0;
+initial {_L50,_L51,_L53,_L60}=1;
 /*page 3.157 Figure 3.49*/
 wire A1;
 assign A1=~(
@@ -107,17 +109,25 @@ assign _A22=~(A39 & _F3);
 wire A22;
 assign A22=~_A22;
 
+wire _A23;
+assign _A23=~(F101 & F2 & _F3);
 wire A23;
-assign A23=~(~(F101 & F2 & _F3));
+assign A23=~_A23;
 
+wire _A24;
+assign _A24=~(_A20 & A37);
 wire A24;
-assign A24=~(~(_A20 & A37));
+assign A24=~_A24;
 
+wire _A25;
+assign _A25=~(_A21 & F101 & _F2);
 wire A25;
-assign A25=~(~(_A21 & F101 & _F2));
+assign A25=~_A25;
 
+wire _A26;
+assign _A26=~(_A22 & A39);
 wire A26;
-assign A26=~(~(_A22 & A39));
+assign A26=~_A26;
 
 wire _A27;
 assign _A27=~(F101 & F2 & F3);
@@ -366,6 +376,8 @@ assign tmp_J_M60=(
 
 wire F6,_F6;
 JK_MS_FF M60(tmp_J_M60,(C1 & _F7),Z1,_S20,_S26,F6,_F6);
+wire F106;
+assign F106=~_F6;
 
 wire F7,_F7;
 JK_MS_FF M59((C1 & F8),(C1 & _F8),Z1,_S20,_S27,F7,_F7);
@@ -958,13 +970,152 @@ assign L11=~(
 );
 
 /*page 3.192 Figure 3.84*/
-
+wire L20,_L20;
 B8_SR M159(L21,L21,Z1,tmp_M158_D,);
 B8_SR M158(tmp_M158_D,tmp_M158_D,Z1,tmp_M157_D,);
 B8_SR M157(tmp_M157_D,tmp_M157_D,Z1,tmp_M156_D,);
 B8_SR M156(tmp_M157_D,tmp_M157_D,Z1,tmp_M155_D,);
 B8_SR M155(tmp_M155_D,tmp_M155_D,Z1,tmp_M149_1_D,);
-DL_D_FF M149_1(tmp_M149_D,_Z1,1'b1,_W2,L20,_L20);
+DL_D_FF M149_1(tmp_M149_1_D,_Z1,1'b1,_W2,L20,_L20);
+
+/*page 3.193 Figure 3.85*/
+
+wire L21;
+assign L21=~(
+    A8
+    &
+    ~(
+        L20
+        &
+        ~(_C30 & A3)
+    )
+    &
+    ~(
+        ~(
+            C40
+            &
+            ~(
+                ~(
+                    K35
+                    &
+                    ~(
+                        (F3 & L20)
+                        |
+                        (_F3 & _L20)
+                    )
+                )
+                &
+                ~(
+                    (L10 & K27)
+                    |
+                    (K14 & L60)
+                    |
+                    (L20 & _K14 & _K27 & _K35)
+                )
+            )
+        )
+    )
+);
+
+/*page 3.201 Figure 3.92*/
+
+wire drum_S_1,drum_S_2;
+assign drum_S_1=~(~(L31 & Z1));
+assign drum_S_2=~(~(_L31 & Z1));
+reg drum_S_R=0;
+wire L39,_L39;
+DL_D_FF M147_1(drum_S_R,_Z1,1'b1,1'b1,L39,_L39);
+
+wire tmp_JK_M146;
+assign tmp_JK_M146=~(K43 & F1 & _A6);
+wire L30,_L30;
+JK_MS_FF M146((tmp_JK_M146 & L39),(tmp_JK_M146 & _L39),Z1,1'b1,1'b1,L30,_L30);
+
+/*page 3.195 Figure 3.87*/
+
+wire _L31;
+assign _L31=~(
+    (K46 & C40 & _F10 & L10)
+    |
+    (A1 & F101)
+    |
+    (K90 & L10)
+    |
+    (
+        K1
+        &
+        ~(
+            (L10 & F4)
+            |
+            (
+                F104
+                &
+                ~(_L10 & L30)
+            )
+        )
+    )
+    |
+    (
+        L30
+        &
+        ~(
+            C40
+            &
+            ~(
+                _K1 & _K9
+                &
+                ~(
+                    (K35 & F1)
+                    |
+                    (K46 & _F10)
+                )
+            )
+        )
+    )
+);
+wire L31;
+assign L31=~_L31;
+
+/*page 3.196 Figure 3.88.1*/
+
+wire drum_GS_1,drum_GS_2;
+assign drum_GS_1=~(~(L41 & L19 & Z1));
+assign drum_GS_2=~(~(L41 & _L19 & Z1));
+reg drum_GS_R=0;
+
+wire L40,_L40;
+DL_D_FF M147_2(drum_GS_R,_Z1,1'b1,1'b1,L40,_L40);
+
+/*page 3.197 Figure 3.88.2*/
+
+/*guarding/sealing logic*/
+
+wire _L41;
+assign _L41=~(
+    K46 & F10 & _F11
+    &
+    ~(
+        (_C30 & T39)
+        |
+        (_C40 & _T39)
+        |
+        (
+            ~(F104)
+            &
+            1'b1 //jumper to write on guarded track
+            &
+            ~(
+                _A27 & _A26 & _A25 //as what is configures in our machine
+            )
+        )
+    )
+);
+wire L41;
+assign L41=~_L41;
+
+/*page 3.198 Figure 3.89*/
+
+
 
 /*page 3.201 Figure 3.92*/
 

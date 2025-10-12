@@ -128,9 +128,11 @@ always @(CLR,PRE) begin
 end
 
 always @(posedge CLK) begin
-    if(J)mQ=1;
-    if(K)mQ=0;
-    if(J&K)mQ=~Q;
+    if(CLR&PRE) begin
+        if(J)mQ=1;
+        if(K)mQ=0;
+        if(J&K)mQ=~Q;
+    end
 end
 always @(negedge CLK) begin
     Q=mQ;
@@ -149,9 +151,11 @@ always @(CLR) begin
     if(~CLR)Q=0;
 end
 always @(posedge CLK) begin
-    if(J)mQ=1;
-    if(K)mQ=0;
-    if(J&K)mQ=~Q;
+    if(CLR) begin
+        if(J)mQ=1;
+        if(K)mQ=0;
+        if(J&K)mQ=~Q;
+    end
 end
 always @(negedge CLK) begin
     Q=mQ;
@@ -165,12 +169,13 @@ module DL_D_FF(input D, CLK, CLR, PRE, output Q, _Q);
 reg Q=0;
 
 assign _Q=~Q;
-always @(CLR) begin
+always @(CLR,PRE) begin
     if(~CLR)Q=0;
     if(~PRE)Q=0;
 end
 always @(negedge CLK) begin
-    Q=D;
+    if(CLR&PRE)
+        Q=D;
 end
 
 endmodule
