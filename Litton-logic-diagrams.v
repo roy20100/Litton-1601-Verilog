@@ -1,6 +1,5 @@
 /*still need connection*/
-wire _K73,_K75,K92,K176;
-wire L10,_L10,L20,_L20,L30,_L30,L50,_L50,L51,_L51,L53,_L53;
+wire L20,_L20,L30,_L30,L50,_L50,L51,_L51,L53,_L53,_L60;
 /*page 3.157 Figure 3.49*/
 wire A1;
 assign A1=~(
@@ -677,6 +676,9 @@ DL_D_FF M128_2(_F22,Z4,1'b1,~(K51 & Ib108),F21,_F21);
 
 /*page 3.181 Figure 3.73*/
 
+wire _K73;
+assign _K73=~Ib108;
+
 wire K0;
 assign K0=~(~(A5 & _F5 & _F6));
 
@@ -797,7 +799,172 @@ assign _K51=~(K5 & C39 & F14);
 wire K51;
 assign K51=~_K51;
 
+/*page 3.186 Figure 3.78*/
 
+wire _K80;
+assign _K80=~(~(~(_F11 & F15 & _C2)));
+
+wire _K82;
+assign _K82=~(~(~(F11 & F15 & _C2)));
+
+wire _K83;
+assign _K83=~(~(_F11 & _F9));
+
+/*page 3.187 Figure 3.79*/
+
+wire K87;
+assign K87=~(A9 & F7 & C49);
+
+wire _K90;
+assign _K90=~(K9 & C40);
+wire K90;
+assign K90=~_K90;
+
+wire _K93;
+assign _K93=~(1'b0);
+wire K92;
+assign K92=~_K93;
+wire K94;
+assign K94=~_K93;
+
+wire _K150;
+assign _K150=~(~_K50);
+
+/*page 3.188 Figure 3.80*/
+
+B8_SR M154(L11,L11,Z1,tmp_M153_D,);
+B8_SR M153(tmp_M153_D,tmp_M153_D,Z1,tmp_M152_D,);
+B8_SR M152(tmp_M152_D,tmp_M152_D,Z1,tmp_M151_D,);
+B8_SR M151(tmp_M151_D,tmp_M151_D,Z1,tmp_M150_D,);
+B8_SR M150(tmp_M150_D,tmp_M150_D,_Z1,L19,);
+wire tmp_M141_D;
+assign tmp_M141_D=~(K43 & _T39 & _F1);
+wire _L19;
+assign _L19=L19;
+wire L10,_L10;
+JK_MS_FF M145((L19 & tmp_M141_D),(_L19 & tmp_M141_D),Z1,1'b1,_W2,L10,_L10);
+
+/*page 3.189 Figure 3.81*/
+
+wire tmp_F;
+assign tmp_F=(
+    K5
+    &
+    ~(
+        ~(_F21 & _F4)
+        |
+        ~(F104 & _F22)
+    )
+);
+
+wire tmp_G;
+assign tmp_G=(
+    K6
+    &
+    ~(
+        ~(_F21 & _F4)
+        |
+        ~(F104 & _L10)
+    )
+);
+
+wire tmp_H;
+assign tmp_H=(A1 & _F1);
+
+wire tmp_I;
+assign tmp_I=(
+    A9 & _F6 & _F5
+    &
+    ~(
+        ~(_L20 & F7)
+        |
+        ~(_F7 & _L60)
+    )
+);
+
+wire tmp_J;
+assign tmp_J=(
+    _K9 & L53
+    &
+    ~(A36 & K13 & _K28)
+);
+
+/*page 3.190 Figure 3.82*/
+
+wire tmp_K;
+assign tmp_K=~(
+    ~(
+        K1 & L30
+        &
+        ~(_A37 & K35)
+    )
+    &
+    ~(
+        tmp_F | tmp_G | tmp_H | tmp_I | tmp_J
+        |
+        (
+            L10
+            &
+            ~(
+                M6
+                &
+                ~(
+                    (_A37 & K35)
+                    |
+                    (
+                        K0
+                        &
+                        ~(_F3 & F104)
+                    )
+                    |
+                    (F8 & F6)
+                    |
+                    (
+                        K7
+                        &
+                        ~(F104 & _L30)
+                    )
+                )
+            )
+        )
+    )
+);
+
+/*page 3.191 Figure 3.83*/
+
+wire L11;
+assign L11=~(
+    ~(C1 & _A2 & F1)
+    &
+    ~(C40 & tmp_K)
+    &
+    ~(
+        (
+            L10
+            &
+            ~(_A2 & _K2 & _C30)
+        )
+        |
+        (
+            A10
+            &
+            ~(
+                ~(K5 & A19)
+                &
+                ~(K6 & C39 & _F4 & F14)
+            )
+        )
+    )
+);
+
+/*page 3.192 Figure 3.84*/
+
+B8_SR M159(L21,L21,Z1,tmp_M158_D,);
+B8_SR M158(tmp_M158_D,tmp_M158_D,Z1,tmp_M157_D,);
+B8_SR M157(tmp_M157_D,tmp_M157_D,Z1,tmp_M156_D,);
+B8_SR M156(tmp_M157_D,tmp_M157_D,Z1,tmp_M155_D,);
+B8_SR M155(tmp_M155_D,tmp_M155_D,Z1,tmp_M149_1_D,);
+DL_D_FF M149_1(tmp_M149_D,_Z1,1'b1,_W2,L20,_L20);
 
 /*page 3.201 Figure 3.92*/
 

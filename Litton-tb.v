@@ -8,6 +8,22 @@ initial begin
     {S1,S2,S3,S4,S6,_S20,_S21,_S22,_S23,_S24,_S25,_S26,_S27,_S28,_S29,_S30}=16'h0FFF;
 end
 
+reg Ib1,Ib2,Ib3,Ib4,Ib5,Ib6,Ib7,Ib8;
+wire Ib101,Ib102,Ib103,Ib104,Ib105,Ib106,Ib107,Ib108;
+assign {Ib101,Ib102,Ib103,Ib104,Ib105,Ib106,Ib107,Ib108}={Ib1,Ib2,Ib3,Ib4,Ib5,Ib6,Ib7,Ib8};
+initial begin
+    {Ib1,Ib2,Ib3,Ib4,Ib5,Ib6,Ib7,Ib8}=8'hFF;
+end
+
+reg K75,K76;
+wire _K75,K176,K150,K80,K82,K83;
+assign {_K75,K176}={~K75,K76};
+assign {K150,K80,K82,K83}={~_K150,~_K80,~_K82,~_K83};
+initial begin
+    {K75,K76}=2'b11;
+end
+
+
 
 /*T4, T7  and T39 logic 3.205*/
 wire T4,T7,_T4,_T7,T39,_T39;
@@ -79,7 +95,7 @@ end
 reg _W2;
 initial begin
     _W2=0;
-    #1;
+    #800;
     _W2=1;
 end
 
