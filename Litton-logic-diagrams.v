@@ -26,7 +26,7 @@ assign A3=~(M1 & S6 & _W2);
 wire A4;
 assign A4=~(_K42 & _C1);
 wire _A4;
-assign _A4=A4;
+assign _A4=~A4;
 
 wire A5;
 assign A5=~(_F8 & _F7 & M6);
@@ -39,9 +39,9 @@ assign A6=~_A6;
 
 wire A7;
 assign A7=~(
-    ~(_L10 & _F1)
+    (_L10 & _F1)
     |
-    ~(_L30 & F1)
+    (_L30 & F1)
 );
 
 wire A8;
@@ -163,7 +163,7 @@ wire A38;
 assign A38=~_A38;
 
 wire _A39;
-assign _A39=(_F1 & F2);
+assign _A39=~(_F1 & F2);
 wire A39;
 assign A39=~_A39;
 
@@ -251,7 +251,7 @@ wire C130=~_C30;
 wire _C37;
 assign _C37=~(C30 & T7);
 wire C37;
-assign C37=_C37;
+assign C37=~_C37;
 
 /*page 3.165 Figure 3.57*/
 
@@ -320,9 +320,9 @@ assign tmp_J_M63_2=~(
     _S23
     &
     ~(
-        ~(C101 & F4)
+        (C101 & F4)
         |
-        ~(K22 & F101)
+        (K22 & F101)
     )
     &
     ~(
@@ -337,9 +337,9 @@ assign tmp_K_M63_2=~(
     ~(K34 & T7 & L20)
     &
     ~(
-        ~(K22 & _F101)
+        (K22 & _F101)
         |
-        ~(C101 & _F104)
+        (C101 & _F104)
     )
 );
 
@@ -483,12 +483,12 @@ assign tmp_J_M112_1=~(
             C37 & F8
             &
             ~(_F10 & T4)
-        )
-        |
-        ~(
-            (_L20 & _Z3)
-            |
-            (L20 & Z3)
+            &
+            ~(
+                (_L20 & _Z3)
+                |
+                (L20 & Z3)
+            )
         )
     )
 );
@@ -850,7 +850,7 @@ B8_SR M150(tmp_M150_D,_Z1,L19,);
 wire tmp_M141_D;
 assign tmp_M141_D=~(K43 & _T39 & _F1);
 wire _L19;
-assign _L19=L19;
+assign _L19=~L19;
 wire L10,_L10;
 JK_MS_FF M145((L19 & tmp_M141_D),(_L19 & tmp_M141_D),Z1,1'b1,_W2,L10,_L10);
 
@@ -861,9 +861,9 @@ assign tmp_F=(
     K5
     &
     ~(
-        ~(_F21 & _F4)
+        (_F21 & _F4)
         |
-        ~(F104 & _F22)
+        (F104 & _F22)
     )
 );
 
@@ -872,9 +872,9 @@ assign tmp_G=(
     K6
     &
     ~(
-        ~(_F21 & _F4)
+        (_F21 & _F4)
         |
-        ~(F104 & _L10)
+        (F104 & _L10)
     )
 );
 
@@ -886,9 +886,9 @@ assign tmp_I=(
     A9 & _F6 & _F5
     &
     ~(
-        ~(_L20 & F7)
+        (_L20 & F7)
         |
-        ~(_F7 & _L60)
+        (_F7 & _L60)
     )
 );
 

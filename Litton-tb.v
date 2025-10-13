@@ -101,7 +101,7 @@ end
 reg _W2;
 initial begin
     _W2=0;
-    #800;
+    #1000;
     _W2=1;
 end
 
