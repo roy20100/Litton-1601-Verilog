@@ -972,7 +972,7 @@ wire L20,_L20;
 B8_SR M159(L21,Z1,tmp_M158_D,);
 B8_SR M158(tmp_M158_D,Z1,tmp_M157_D,);
 B8_SR M157(tmp_M157_D,Z1,tmp_M156_D,);
-B8_SR M156(tmp_M157_D,Z1,tmp_M155_D,);
+B8_SR M156(tmp_M156_D,Z1,tmp_M155_D,);
 B8_SR M155(tmp_M155_D,Z1,tmp_M149_1_D,);
 DL_D_FF M149_1(tmp_M149_1_D,_Z1,1'b1,_W2,L20,_L20);
 
@@ -1020,7 +1020,8 @@ assign L21=~(
 wire drum_S_1,drum_S_2;
 assign drum_S_1=~(~(L31 & Z1));
 assign drum_S_2=~(~(_L31 & Z1));
-reg drum_S_R=0;
+wire drum_S_R;
+Drum_S Drum_S(drum_S_1,drum_S_2,Z1,W1,bit,drum_S_R);
 wire L39,_L39;
 DL_D_FF M147_1(drum_S_R,_Z1,1'b1,1'b1,L39,_L39);
 
@@ -1079,8 +1080,8 @@ assign L31=~_L31;
 wire drum_GS_1,drum_GS_2;
 assign drum_GS_1=~(~(L41 & L19 & Z1));
 assign drum_GS_2=~(~(L41 & _L19 & Z1));
-reg drum_GS_R=0;
-
+wire drum_GS_R;
+Drum_GS_32 Drum_GS(drum_GS_1,drum_GS_2,Z1,W1,track,bit,drum_GS_R);
 wire L40,_L40;
 DL_D_FF M147_2(drum_GS_R,_Z1,1'b1,1'b1,L40,_L40);
 
@@ -1187,8 +1188,9 @@ assign _L60=~L60;
 wire drum_BI_1,drum_BI_2;
 assign drum_BI_1=~(~(L91 & Z1));
 assign drum_BI_2=~(~(_L91 & Z1));
-reg drum_BI_R=0;
-
+wire drum_BI_R;
+Drum_S Drum_BI(drum_BI_1,drum_BI_2,Z1,W1,bit,drum_BI_R);
+wire L90,_L90;
 DL_D_FF M149_2(drum_BI_R,Z1,1'b1,1'b1,L90,_L90);
 
 wire _L91;

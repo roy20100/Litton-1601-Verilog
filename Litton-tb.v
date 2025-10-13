@@ -6,12 +6,26 @@ module Litton_tb;
 reg S1,S2,S3,S4,S6,_S20,_S21,_S22,_S23,_S24,_S25,_S26,_S27,_S28,_S29,_S30;
 initial begin
     {S1,S2,S3,S4,S6,_S20,_S21,_S22,_S23,_S24,_S25,_S26,_S27,_S28,_S29,_S30}=16'h0FFF;
+    S3=1;
+    S2=1;
+    #2000;
+    S3=0;
+    S2=0;
+    S1=1;
 end
 
-wire run,halt;
+wire run,halt,ready;
 assign run=M6;
 assign halt=~M6;
 assign ready=_W2;
+
+wire [4:0]track={1'b0,A24|A25|A26|A27,A22|A23|A26|A27,A21|A23|A25|A27,1'b0}|{~_A32|~_A33,3'b000,~_A31|~_A33};
+wire [5119:0] Active_GS_Track=Drum_GS.drum[track];
+
+wire [7:0]CR={F8,F7,F6,F5,F4,F3,F2,F1};
+wire [39:0]I,A;
+assign I={M155.SR,M156.SR,M157.SR,M158.SR,M159.SR};
+assign A={M150.SR,M151.SR,M152.SR,M153.SR,M154.SR};
 
 reg Ib1,Ib2,Ib3,Ib4,Ib5,Ib6,Ib7,Ib8;
 wire Ib101,Ib102,Ib103,Ib104,Ib105,Ib106,Ib107,Ib108;
@@ -41,13 +55,17 @@ assign T39=~_T39;
 /*Z1, Z2, Z3 logic*/
 reg Z1,Z2,Z3;
 reg [6:0]adr;
+reg [13:0]bit;
 wire _Z1,_Z2,_Z3;
 
 assign _Z1=~Z1;
 initial begin
     Z1=0;
+    bit=0;
     #2;
     forever begin
+        bit=bit+1;
+        if(bit>=5120)bit=0;
         Z1=1;
         #2;
         Z1=0;
@@ -99,6 +117,7 @@ initial begin
     end
 end
 reg _W2;
+wire W1=_W2; 
 initial begin
     _W2=0;
     #1000;
@@ -108,7 +127,7 @@ end
 initial begin
     $dumpfile("Litton-tb.vcd");
     $dumpvars(0,Litton_tb);
-    #(10*40*128*1)
+    #(10*40*128*10)
     $finish();
 end
 endmodule
@@ -199,6 +218,45 @@ assign _Q=~Q;
 
 always @(posedge CP) begin
     SR={SR[6:0],D};
+end
+
+endmodule
+
+module Drum_GS_32(input A, B ,Z1,W1,input [4:0]track,input [13:0]bit, output R);
+
+reg [5119:0] drum[0:31];
+
+/*
+integer i; // Loop variable must be declared as an integer
+initial begin
+    for (i = 0; i < 32; i = i + 1) begin
+        drum[i] = 5120'b0; 
+    end
+end
+*/
+initial begin
+    $readmemh("opus.mem", drum);
+end
+assign R=drum[track][bit];
+always @(posedge Z1)begin
+    if(W1)begin
+        if(A^B)
+            drum[track][bit]=A;
+    end
+end
+
+endmodule
+
+module Drum_S(input A, B ,Z1,W1,input [13:0]bit, output R);
+
+reg [5119:0] drum=0;
+wire wbit=13'h1FFF&(bit+320);
+assign R=drum[bit];
+always @(posedge Z1)begin
+    if(W1)begin
+        if(A^B)
+            drum[wbit]=A;
+    end
 end
 
 endmodule
