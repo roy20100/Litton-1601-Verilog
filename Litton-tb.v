@@ -8,6 +8,11 @@ initial begin
     {S1,S2,S3,S4,S6,_S20,_S21,_S22,_S23,_S24,_S25,_S26,_S27,_S28,_S29,_S30}=16'h0FFF;
 end
 
+wire run,halt;
+assign run=M6;
+assign halt=~M6;
+assign ready=_W2;
+
 reg Ib1,Ib2,Ib3,Ib4,Ib5,Ib6,Ib7,Ib8;
 wire Ib101,Ib102,Ib103,Ib104,Ib105,Ib106,Ib107,Ib108;
 assign {Ib101,Ib102,Ib103,Ib104,Ib105,Ib106,Ib107,Ib108}={Ib1,Ib2,Ib3,Ib4,Ib5,Ib6,Ib7,Ib8};
@@ -40,7 +45,8 @@ wire _Z1,_Z2,_Z3;
 
 assign _Z1=~Z1;
 initial begin
-    Z1=1;
+    Z1=0;
+    #2;
     forever begin
         Z1=1;
         #2;
@@ -52,7 +58,7 @@ end
 assign _Z2=~Z2;
 initial begin
     Z2=0;
-    #2;
+    #2;#2;
     forever begin
         #(31*10);
         Z2=1;
@@ -69,7 +75,7 @@ assign _Z3=~Z3;
 initial begin
     Z3=0;
     adr=0;
-    #2;
+    #2;#2;
     forever begin
         adr=adr+1;
         if(adr>127)adr=0;
@@ -148,7 +154,10 @@ reg mQ=0;
 
 assign _Q=~Q;
 always @(CLR) begin
-    if(~CLR)Q=0;
+    if(~CLR)begin
+        Q=0;
+        mQ=0;
+    end
 end
 always @(posedge CLK) begin
     if(CLR) begin
@@ -171,9 +180,9 @@ reg Q=0;
 assign _Q=~Q;
 always @(CLR,PRE) begin
     if(~CLR)Q=0;
-    if(~PRE)Q=0;
+    if(~PRE)Q=1;
 end
-always @(negedge CLK) begin
+always @(posedge CLK) begin
     if(CLR&PRE)
         Q=D;
 end
@@ -181,15 +190,15 @@ end
 endmodule
 
 /*585020  page 4.26*/
-module B8_SR(input A, B, _CP, output Q, _Q);
+module B8_SR(input D, CP, output Q, _Q);
 
 reg [7:0] SR=8'h00;
 
 assign Q=SR[7];
 assign _Q=~Q;
 
-always @(negedge _CP) begin
-    SR={SR[6:0],A&B};
+always @(posedge CP) begin
+    SR={SR[6:0],D};
 end
 
 endmodule
