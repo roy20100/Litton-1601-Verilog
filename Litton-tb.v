@@ -112,7 +112,7 @@ initial begin
         #(10);
         Z3=adr[6];
         #10;
-        Z3=0;
+        Z3=adr==0;
         #10;
     end
 end
@@ -222,9 +222,9 @@ end
 
 endmodule
 
-module Drum_GS_32(input A, B ,Z1,W1,input [4:0]track,input [13:0]bit, output R);
+module Drum_GS_32(input A, B ,Z1,W1,input [4:0]track,input [13:0]bit, output reg R);
 
-reg [5119:0] drum[0:31];
+reg [0:5119] drum[0:31];
 
 /*
 integer i; // Loop variable must be declared as an integer
@@ -237,19 +237,21 @@ end
 initial begin
     $readmemh("opus.mem", drum);
 end
-assign R=drum[track][bit];
 always @(posedge Z1)begin
     if(W1)begin
         if(A^B)
             drum[track][bit]=A;
     end
 end
+always @(negedge Z1) begin
+    R=drum[track][bit];
+end
 
 endmodule
 
 module Drum_S(input A, B ,Z1,W1,input [13:0]bit, output R);
 
-reg [5119:0] drum=0;
+reg [0:5119] drum=0;
 wire wbit=13'h1FFF&(bit+320);
 assign R=drum[bit];
 always @(posedge Z1)begin

@@ -6,9 +6,11 @@ assign A1=~(
     ~(K43 & _L50)
     &
     ~(
-        F9 & _K42
+        F9
         &
         ~(
+            _K42
+            &
             ~(A6 & _F6 & K34)
             &
             ~(K40 & L53)
@@ -266,7 +268,7 @@ wire C40;
 assign C40=~_C40;
 
 wire _C49;
-assign _C49=~(_C1 & C2);
+assign _C49=~(C40 & T39);
 wire C49;
 assign C49=~_C49;
 
@@ -698,7 +700,7 @@ wire K1;
 assign K1=~_K1;
 
 wire _K2;
-assign _K2=~(A6 & _F5 & F6 & C40);
+assign _K2=~(A6 & F5 & F6 & C40);
 wire K2;
 assign K2=~_K2;
 
@@ -1083,7 +1085,7 @@ assign drum_GS_2=~(~(L41 & _L19 & Z1));
 wire drum_GS_R;
 Drum_GS_32 Drum_GS(drum_GS_1,drum_GS_2,Z1,W1,track,bit,drum_GS_R);
 wire L40,_L40;
-DL_D_FF M147_2(drum_GS_R,_Z1,1'b1,1'b1,L40,_L40);
+DL_D_FF M147_2(~drum_GS_R,_Z1,1'b1,1'b1,L40,_L40);
 
 /*page 3.197 Figure 3.88.2*/
 
