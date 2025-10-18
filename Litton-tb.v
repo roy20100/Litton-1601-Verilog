@@ -10,13 +10,13 @@ initial begin
     S2=1;
     S3=0;
     #20000;
-    S1=0;
+    S1=1;
     S2=0;
-    S3=1;
-    #100000;
-    S1=0;
-    S2=1;
     S3=0;
+    // #100000;
+    // S1=0;
+    // S2=1;
+    // S3=0;
 end
 
 wire run,halt,ready;
@@ -30,12 +30,12 @@ wire dbg_auto_M3,dbg_step_M2,dbg_idle_M1,dbg_stop_M0;
 assign {dbg_auto_M3,dbg_step_M2,dbg_idle_M1,dbg_stop_M0}={M5 & M6, _M5 & M6, M5 & _M6, _M5 & _M6};
 
 wire [4:0]track={1'b0,A24|A25|A26|A27,A22|A23|A26|A27,A21|A23|A25|A27,1'b0}|{~_A32|~_A33,3'b000,~_A31|~_A33};
-wire [5119:0] Active_GS_Track=Drum_GS.drum[track];
+wire [5119:0] dbg_active_GS_track=Drum_GS.drum[track];
 
-wire [7:0]CR={F8,F7,F6,F5,F4,F3,F2,F1};
-wire [39:0]I,A;
-assign I={M155.SR,M156.SR,M157.SR,M158.SR,M159.SR};
-assign A={M150.SR,M151.SR,M152.SR,M153.SR,M154.SR};
+wire [7:0]dbg_CR={F8,F7,F6,F5,F4,F3,F2,F1};
+wire [39:0]dbg_I,dbg_A;
+assign dbg_I={M155.SR,M156.SR,M157.SR,M158.SR,M159.SR};
+assign dbg_A={M150.SR,M151.SR,M152.SR,M153.SR,M154.SR};
 
 reg Ib1,Ib2,Ib3,Ib4,Ib5,Ib6,Ib7,Ib8;
 wire Ib101,Ib102,Ib103,Ib104,Ib105,Ib106,Ib107,Ib108;
@@ -238,16 +238,17 @@ reg [0:5119] drum[0:31];
 
 integer i; // Loop variable must be declared as an integer
 initial R=0;
-initial begin
-    for (i = 0; i < 32; i = i + 1) begin
-        drum[i] = 5120'b0; 
-    end
-    drum[31]=40'h00FEFF0000;
-end
+// initial begin
+//     for (i = 0; i < 32; i = i + 1) begin
+//         drum[i] = 5120'b0; 
+//     end
+//     //drum[31]=40'h00FEFF0000;
+//     drum[31][5119:5080]=40'hFF0A010203;
+// end
 
 
 initial begin
-//    $readmemh("opus.mem", drum);
+    $readmemh("opus.mem", drum);
 end
 always @(posedge Z1)begin
     if(W1)begin
