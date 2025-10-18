@@ -6,18 +6,28 @@ module Litton_tb;
 reg S1,S2,S3,S4,S6,_S20,_S21,_S22,_S23,_S24,_S25,_S26,_S27,_S28,_S29,_S30;
 initial begin
     {S1,S2,S3,S4,S6,_S20,_S21,_S22,_S23,_S24,_S25,_S26,_S27,_S28,_S29,_S30}=16'h0FFF;
-    S3=1;
+    S1=0;
     S2=1;
-    #2000;
     S3=0;
+    #20000;
+    S1=0;
     S2=0;
-    S1=1;
+    S3=1;
+    #100000;
+    S1=0;
+    S2=1;
+    S3=0;
 end
 
 wire run,halt,ready;
 assign run=M6;
 assign halt=~M6;
 assign ready=_W2;
+
+wire dbg_C10,dbg_C20,dbg_C30,dbg_C40;
+assign {dbg_C10,dbg_C20,dbg_C30,dbg_C40}={C1 & C2, C1 & _C2, _C1 & _C2 , _C1 & C2};
+wire dbg_auto_M3,dbg_step_M2,dbg_idle_M1,dbg_stop_M0;
+assign {dbg_auto_M3,dbg_step_M2,dbg_idle_M1,dbg_stop_M0}={M5 & M6, _M5 & M6, M5 & _M6, _M5 & _M6};
 
 wire [4:0]track={1'b0,A24|A25|A26|A27,A22|A23|A26|A27,A21|A23|A25|A27,1'b0}|{~_A32|~_A33,3'b000,~_A31|~_A33};
 wire [5119:0] Active_GS_Track=Drum_GS.drum[track];
@@ -226,16 +236,18 @@ module Drum_GS_32(input A, B ,Z1,W1,input [4:0]track,input [13:0]bit, output reg
 
 reg [0:5119] drum[0:31];
 
-/*
 integer i; // Loop variable must be declared as an integer
+initial R=0;
 initial begin
     for (i = 0; i < 32; i = i + 1) begin
         drum[i] = 5120'b0; 
     end
+    drum[31]=40'h00FEFF0000;
 end
-*/
+
+
 initial begin
-    $readmemh("opus.mem", drum);
+//    $readmemh("opus.mem", drum);
 end
 always @(posedge Z1)begin
     if(W1)begin
