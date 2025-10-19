@@ -171,8 +171,6 @@ assign A39=~_A39;
 
 /*page 3.162 Figure 3.54*/
 
-wire C1,_C1;
-
 wire tmp_J_M14;
 assign tmp_J_M14=~(
     ~(C39 & M1 & S4)
@@ -192,6 +190,7 @@ assign tmp_K_M14=(
     ~(_L20 & _F8 & _F7 & A38 & F3 & _F2 & _M1)
 );
 
+wire C1,_C1;
 JK_MS_FF M14(tmp_J_M14,tmp_K_M14,Z1,1'b1,_W2,C1,_C1);
 
 wire C101;
@@ -1021,7 +1020,7 @@ wire drum_S_1,drum_S_2;
 assign drum_S_1=~(~(L31 & Z1));
 assign drum_S_2=~(~(_L31 & Z1));
 wire drum_S_R;
-Drum_S Drum_S(drum_S_1,drum_S_2,Z1,W1,bit,drum_S_R);
+Drum_S Drum_S(drum_S_1,drum_S_2,Z1,W1,g_bit,drum_S_R);
 wire L39,_L39;
 DL_D_FF M147_1(drum_S_R,_Z1,1'b1,1'b1,L39,_L39);
 
@@ -1081,9 +1080,9 @@ wire drum_GS_1,drum_GS_2;
 assign drum_GS_1=~(~(L41 & L19 & Z1));
 assign drum_GS_2=~(~(L41 & _L19 & Z1));
 wire drum_GS_R;
-Drum_GS_32 Drum_GS(drum_GS_1,drum_GS_2,Z1,W1,track,bit,drum_GS_R);
+Drum_GS_32 Drum_GS(drum_GS_1,drum_GS_2,Z1,W1,g_track,g_bit,drum_GS_R);
 wire L40,_L40;
-DL_D_FF M147_2(~drum_GS_R,_Z1,1'b1,1'b1,L40,_L40);
+DL_D_FF M147_2(drum_GS_R,_Z1,1'b1,1'b1,L40,_L40);
 
 /*page 3.197 Figure 3.88.2*/
 
@@ -1189,7 +1188,7 @@ wire drum_BI_1,drum_BI_2;
 assign drum_BI_1=~(~(L91 & Z1));
 assign drum_BI_2=~(~(_L91 & Z1));
 wire drum_BI_R;
-Drum_S Drum_BI(drum_BI_1,drum_BI_2,Z1,W1,bit,drum_BI_R);
+Drum_S Drum_BI(drum_BI_1,drum_BI_2,Z1,W1,g_bit,drum_BI_R);
 wire L90,_L90;
 DL_D_FF M149_2(drum_BI_R,Z1,1'b1,1'b1,L90,_L90);
 
@@ -1253,8 +1252,8 @@ JK_MS_FF M12(tmp_J_M12,tmp_K_M12,Z1,_W2,1'b1,M6,_M6);
 
 /*page 3.202 Figure 3.93*/
 
-wire Ob1,Ob2,Ob3,Ob4,Ob5,Ob6,Ob7,Ob8;
-assign {Ob1,Ob2,Ob3,Ob4,Ob5,Ob6,Ob7,Ob8}=~{_F21,_F22,_F23,_F24,_F25,_F26,_F27,_F28};
+wire [7:0]Ob;
+assign Ob=~{_F21,_F22,_F23,_F24,_F25,_F26,_F27,_F28};
 
 /*page 3.207 Figure 3.98*/
 
