@@ -188,30 +188,26 @@ endmodule
 module JK_MS_FF(input J, K, CLK, CLR, PRE, output Q, _Q);
 
 reg Q=0;
-reg mQ=0;
+// reg mQ=0;
 
+
+// always @(posedge CLK, negedge CLR, negedge PRE) begin
+//     if(CLR&PRE) begin
+//         if(J&K)mQ=~Q;
+//         else if(J)mQ=1;
+//         else if(K)mQ=0;
+//     end
+// end
+always @(negedge CLK, negedge CLR, negedge PRE) begin
+    if(~CLR)Q=0;
+    else if(~PRE)Q=1;
+    else begin
+        if(J&K)Q=~Q;
+        else if(J)Q=1;
+        else if(K)Q=0;
+    end
+end
 assign _Q=~Q;
-always @(CLR,PRE) begin
-    if(~CLR)begin 
-        Q=0;
-        mQ=0;
-    end
-    if(~PRE)begin
-        Q=1;
-        mQ=1;
-    end
-end
-
-always @(posedge CLK) begin
-    if(CLR&PRE) begin
-        if(J)mQ=1;
-        if(K)mQ=0;
-        if(J&K)mQ=~Q;
-    end
-end
-always @(negedge CLK) begin
-    Q=mQ;
-end
 
 endmodule
 
@@ -219,25 +215,26 @@ endmodule
 module DL_JK_MS_FF(input J, K, CLK, CLR, output Q, _Q);
 
 reg Q=0;
-reg mQ=0;
+// reg mQ=0;
 
-assign _Q=~Q;
-always @(CLR) begin
-    if(~CLR)begin
-        Q=0;
-        mQ=0;
-    end
-end
-always @(posedge CLK) begin
+// assign _Q=~Q;
+// always @(posedge CLK, negedge CLR) begin
+//     if(CLR) begin
+//         if(J)mQ=1;
+//         if(K)mQ=0;
+//         if(J&K)mQ=~Q;
+//     end
+//     else mQ=0;
+// end
+always @(negedge CLK, negedge CLR) begin
     if(CLR) begin
-        if(J)mQ=1;
-        if(K)mQ=0;
-        if(J&K)mQ=~Q;
+        if(J)Q=1;
+        if(K)Q=0;
+        if(J&K)Q=~Q;
     end
+    else Q=0;
 end
-always @(negedge CLK) begin
-    Q=mQ;
-end
+assign _Q=~Q;
 
 endmodule
 
@@ -246,15 +243,12 @@ module DL_D_FF(input D, CLK, CLR, PRE, output Q, _Q);
 
 reg Q=0;
 
-assign _Q=~Q;
-always @(CLR,PRE) begin
+always @(posedge CLK, negedge CLR, negedge PRE) begin
     if(~CLR)Q=0;
-    if(~PRE)Q=1;
+    else if(~PRE)Q=1;
+    else Q=D;
 end
-always @(posedge CLK) begin
-    if(CLR&PRE)
-        Q=D;
-end
+assign _Q=~Q;
 
 endmodule
 
@@ -264,11 +258,11 @@ module B8_SR(input D, CP, output Q, _Q);
 reg [7:0] SR=8'h00;
 
 assign Q=SR[7];
-assign _Q=~Q;
 
 always @(posedge CP) begin
     SR={SR[6:0],D};
 end
+assign _Q=~Q;
 
 endmodule
 
