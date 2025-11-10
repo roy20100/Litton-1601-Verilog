@@ -10,37 +10,45 @@ initial begin
     S1=0;
     S2=1;
     S3=0;
-    #20000;
-    S1=0;
-    S2=0;
-    S3=1;
-    #100000;
-    {S1,S2,S3,S4}=4'b0100;//TCR
-    #10000;
-    {S1,S2,S3,S4}=4'b0001;
-    #10000;
-    {S1,S2,S3,S4}=4'b0100;//32
-    #10000;
-    {S1,S2,S3,S4}=4'b0001;
-    #10000;
-    {S1,S2,S3,S4}=4'b0100;//24
-    #10000;
-    {S1,S2,S3,S4}=4'b0001;
-    #10000;
-    {S1,S2,S3,S4}=4'b0100;//16
-    #10000;
-    {S1,S2,S3,S4}=4'b0001;
-    #10000;
-    {S1,S2,S3,S4}=4'b0100;//8
-    #10000;
-    {S1,S2,S3,S4}=4'b0001;
-    #10000;
-    {S1,S2,S3,S4}=4'b0100;//0
-    #10000;
-    {S1,S2,S3,S4}=4'b0001;
-    #10000;
-    S6=1;
-    {S1,S2,S3,S4}=4'b0100;//LCR
+    #20000
+    _S20=0;
+    #1000
+    _S20=1;
+    #10000
+    _S22=0;
+    #1000
+    _S22=1;
+    // #20000;
+    // S1=0;
+    // S2=0;
+    // S3=1;
+    // #100000;
+    // {S1,S2,S3,S4}=4'b0100;//TCR
+    // #10000;
+    // {S1,S2,S3,S4}=4'b0001;
+    // #10000;
+    // {S1,S2,S3,S4}=4'b0100;//32
+    // #10000;
+    // {S1,S2,S3,S4}=4'b0001;
+    // #10000;
+    // {S1,S2,S3,S4}=4'b0100;//24
+    // #10000;
+    // {S1,S2,S3,S4}=4'b0001;
+    // #10000;
+    // {S1,S2,S3,S4}=4'b0100;//16
+    // #10000;
+    // {S1,S2,S3,S4}=4'b0001;
+    // #10000;
+    // {S1,S2,S3,S4}=4'b0100;//8
+    // #10000;
+    // {S1,S2,S3,S4}=4'b0001;
+    // #10000;
+    // {S1,S2,S3,S4}=4'b0100;//0
+    // #10000;
+    // {S1,S2,S3,S4}=4'b0001;
+    // #10000;
+    // S6=1;
+    // {S1,S2,S3,S4}=4'b0100;//LCR
 end
 
 wire dbg_run,dbg_halt,dbg_ready,dbg_K_F14,dbg_track_F9;
@@ -60,8 +68,8 @@ wire [5119:0] dbg_active_GS_track=Drum_GS.drum[g_track];
 
 wire [7:0]dbg_CR={F8,F7,F6,F5,F4,F3,F2,F1};
 wire [39:0]dbg_I,dbg_A;
-assign dbg_I={M155.SR,M156.SR,M157.SR,M158.SR,M159.SR};
-assign dbg_A={M150.SR,M151.SR,M152.SR,M153.SR,M154.SR};
+assign dbg_I={M159.SR,M158.SR,M157.SR,M156.SR,M155.SR};
+assign dbg_A={M154.SR,M153.SR,M152.SR,M151.SR,M150.SR};
 
 reg [39:0]dbg_A_TS,dbg_I_TS;
 always @(posedge T39) begin
@@ -264,9 +272,9 @@ end
 
 endmodule
 
-module Drum_GS_32(input A, B ,Z1,W1,input [4:0]track,input [13:0]bit, output reg R1);
+module Drum_GS_32(input A, B ,Z1,W1,input [4:0]track,input [13:0]c_bit, output reg R1);
 
-reg [0:5119] drum[0:31];
+reg [5119:0] drum[0:31];
 reg R0=0;
 integer i; // Loop variable must be declared as an integer
 initial R1=0;
@@ -276,7 +284,7 @@ initial begin
     end
     //drum[31]=40'h00FEFF0000;
     //drum[31][5080:5119]=40'hFF0A010203;
-    drum[31][5080:5119]=40'h5555555555;
+    drum[31][5119:5080]=40'h5555555555;
 end
 
 initial begin
@@ -287,21 +295,21 @@ always @(posedge Z1)begin
     R1=R0;
     if(W1)begin
         if(A^B)
-            drum[track][bit]=A;
+            drum[track][c_bit]=A;
     end
 end
 always @(negedge Z1) begin
     
-    R0=drum[track][bit];
+    R0=drum[track][c_bit];
 end
 
 endmodule
 
-module Drum_S(input A, B ,Z1,W1,input [13:0]bit, output R);
+module Drum_S(input A, B ,Z1,W1,input [13:0]c_bit, output R);
 
 reg [0:5119] drum=0;
-wire wbit=13'h1FFF&(bit+320);
-assign R=drum[bit];
+wire wbit=13'h1FFF&(c_bit+320);
+assign R=drum[c_bit];
 always @(posedge Z1)begin
     if(W1)begin
         if(A^B)

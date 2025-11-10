@@ -842,7 +842,7 @@ wire _K150;
 assign _K150=~(~_K50);
 
 /*page 3.188 Figure 3.80*/
-
+wire tmp_M153_D,tmp_M152_D,tmp_M151_D,tmp_M150_D,L19;
 B8_SR M154(L11,Z1,tmp_M153_D,);
 B8_SR M153(tmp_M153_D,Z1,tmp_M152_D,);
 B8_SR M152(tmp_M152_D,Z1,tmp_M151_D,);
@@ -969,7 +969,7 @@ assign L11=~(
 );
 
 /*page 3.192 Figure 3.84*/
-wire L20,_L20;
+wire tmp_M158_D,tmp_M157_D,tmp_M156_D,tmp_M155_D,tmp_M149_1_D,L20,_L20;
 B8_SR M159(L21,Z1,tmp_M158_D,);
 B8_SR M158(tmp_M158_D,Z1,tmp_M157_D,);
 B8_SR M157(tmp_M157_D,Z1,tmp_M156_D,);
