@@ -660,10 +660,10 @@ wire F20,_F20;
 DL_D_FF M131_1(tmp_D_M131_1,Z1,1'b1,1'b1,F20,_F20);
 
 wire F28,_F28;
-DL_D_FF M131_2(_F20,_Z4,1'b1,~(K51 & Ib107),F28,_F28);
+DL_D_FF M131_2(_F20,_Z4,1'b1,~(K51 & Ib107),_F28,F28);
 
 wire F27,_F27;
-JK_MS_FF M127(_F28,F28,Z4,~(K51 & Ib106),1'b1,_F27,F27);
+JK_MS_FF M127(F28,_F28,Z4,1'b1,~(K51 & Ib106),F27,_F27);
 
 /*page 3.179 Figure 3.71*/
 
@@ -1253,7 +1253,7 @@ JK_MS_FF M12(tmp_J_M12,tmp_K_M12,Z1,_W2,1'b1,M6,_M6);
 /*page 3.202 Figure 3.93*/
 
 wire [7:0]Ob;
-assign Ob=~{_F21,_F22,_F23,_F24,_F25,_F26,_F27,_F28};
+assign Ob=~{_F28,_F27,_F26,_F25,_F24,_F23,_F22,_F21};
 
 /*page 3.207 Figure 3.98*/
 

@@ -69,9 +69,11 @@ assign dbg_I={M159.SR,M158.SR,M157.SR,M156.SR,M155.SR};
 assign dbg_A={M154.SR,M153.SR,M152.SR,M151.SR,M150.SR,L10};
 
 reg [39:0]dbg_A_TS,dbg_I_TS;
+reg [15:0]dbg_CR_HB;
 always @(negedge T39) begin
     dbg_I_TS=dbg_I;
     dbg_A_TS=dbg_A[39:0];
+    dbg_CR_HB={dbg_CR,dbg_I[39:32]};
 end
 
 reg [0:7]Ib;
@@ -86,7 +88,7 @@ wire _K75,K176,K150,K80,K82,K83;
 assign {_K75,K176}={~K75,K76};
 assign {K150,K80,K82,K83}={~_K150,~_K80,~_K82,~_K83};
 initial begin
-    {K75,K76}=2'b11;
+    {K75,K76}=2'b00;
 end
 
 
@@ -175,7 +177,7 @@ end
 initial begin
     $dumpfile("Litton-tb.vcd");
     $dumpvars(0,Litton_tb);
-    #(10*40*128*10)
+    #(10*40*128*20)
     $finish();
 end
 endmodule
