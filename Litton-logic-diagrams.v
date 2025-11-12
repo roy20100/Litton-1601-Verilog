@@ -160,7 +160,7 @@ wire A37;
 assign A37=~_A37;
 
 wire _A38;
-assign _A38=~(_F1 & F2);
+assign _A38=~(F5 & _F6);
 wire A38;
 assign A38=~_A38;
 
