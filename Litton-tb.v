@@ -16,7 +16,8 @@ initial begin
     // #1000
     // _S22=1;
     #20000;
-    {S1,S2,S3,S4,S6}=5'b00100;//step position
+    //{S1,S2,S3,S4,S6}=5'b00100;//step position
+    {S1,S2,S3,S4,S6}=5'b10000;//run position
     #100000;
     //{S1,S2,S3,S4}=4'b0100;//TCR
     // #10000;
@@ -62,14 +63,15 @@ wire [4:0]g_track={1'b0,A24|A25|A26|A27,A22|A23|A26|A27,A21|A23|A25|A27,1'b0}|{~
 wire [5119:0] dbg_active_GS_track=Drum_GS.drum[g_track];
 
 wire [7:0]dbg_CR={F8,F7,F6,F5,F4,F3,F2,F1};
-wire [39:0]dbg_I,dbg_A;
+wire [39:0]dbg_I;
+wire [40:0]dbg_A;
 assign dbg_I={M159.SR,M158.SR,M157.SR,M156.SR,M155.SR};
-assign dbg_A={M154.SR,M153.SR,M152.SR,M151.SR,M150.SR};
+assign dbg_A={M154.SR,M153.SR,M152.SR,M151.SR,M150.SR,L10};
 
 reg [39:0]dbg_A_TS,dbg_I_TS;
 always @(negedge T39) begin
     dbg_I_TS=dbg_I;
-    dbg_A_TS=dbg_A;
+    dbg_A_TS=dbg_A[39:0];
 end
 
 reg [0:7]Ib;
@@ -269,17 +271,17 @@ reg [5119:0] drum[0:31];
 reg R0=0;
 integer i; // Loop variable must be declared as an integer
 initial R1=0;
-initial begin
-    for (i = 0; i < 32; i = i + 1) begin
-        drum[i] = 5120'b0; 
-    end
-    //drum[31]=40'h00FEFF0000;
-    //drum[31][5080:5119]=40'hFF0A010203;
-    drum[31][5119:5080]=40'h5555555555;
-end
+// initial begin
+//     for (i = 0; i < 32; i = i + 1) begin
+//         drum[i] = 5120'b0; 
+//     end
+//     //drum[31]=40'h00FEFF0000;
+//     //drum[31][5080:5119]=40'hFF0A010203;
+//     drum[31][5119:5080]=40'h5555555555;
+// end
 
 initial begin
-//    $readmemh("opus.mem", drum);
+    $readmemh("opus.mem", drum);
 end
 
 always @(posedge Z1)begin
@@ -298,7 +300,7 @@ endmodule
 
 module Drum_S(input A, B ,Z1,W1,input [13:0]c_bit, output R);
 
-reg [0:5119] drum=0;
+reg [5119:0] drum=0;
 wire wbit=13'h1FFF&(c_bit+320);
 assign R=drum[c_bit];
 always @(posedge Z1)begin

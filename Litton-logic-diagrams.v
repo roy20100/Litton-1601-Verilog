@@ -31,7 +31,7 @@ wire _A4;
 assign _A4=~A4;
 
 wire A5;
-assign A5=~(_F8 & _F7 & M6);
+assign A5=~(~(_F8 & _F7 & M6));
 
 /*page 3.158 Figure 3.50*/
 wire _A6;
@@ -228,7 +228,7 @@ assign tmp_K_M13=(
             ~(
                 _M1
                 &
-                ~(_F8 & _F7 & _F9)
+                ~(_F8 & _F7 & _K9)
             )
         )
     )
@@ -599,7 +599,7 @@ assign tmp_E=~(
         &
         ~(
             (
-                T39
+                _T39
                 &
                 ~(
                     C30 & _F8 & _T7
@@ -634,7 +634,7 @@ assign tmp_E=~(
 /*page 3.177 Figure 3.69*/
 
 wire F14,_F14;
-DL_JK_MS_FF M112_2(tmp_E,tmp_D,Z1,_W2,F14,_F14);
+DL_JK_MS_FF M112_2(tmp_D,tmp_E,Z1,_W2,_F14,F14);
 
 wire F15,_F15;
 JK_MS_FF M126((K6& C49),(C20 & T39),Z1,1'b1,1'b1,F15,_F15);
@@ -663,27 +663,27 @@ wire F28,_F28;
 DL_D_FF M131_2(_F20,_Z4,1'b1,~(K51 & Ib107),F28,_F28);
 
 wire F27,_F27;
-JK_MS_FF M127(F28,_F28,Z4,1'b1,~(K51 & Ib106),F27,_F27);
+JK_MS_FF M127(_F28,F28,Z4,~(K51 & Ib106),1'b1,_F27,F27);
 
 /*page 3.179 Figure 3.71*/
 
 wire F26,_F26;
-DL_JK_MS_FF M130_1(F27,_F27,Z4,~(K51 & Ib105),F26,_F26);
+DL_JK_MS_FF M130_1(_F27,F27,Z4,~(K51 & Ib105),_F26,F26);
 
 wire F25,_F25;
-DL_JK_MS_FF M130_2(F26,_F26,Z4,~(K51 & Ib104),F25,_F25);
+DL_JK_MS_FF M130_2(_F26,F26,Z4,~(K51 & Ib104),_F25,F25);
 
 wire F24,_F24;
-DL_JK_MS_FF M129_1(F25,_F25,Z4,~(K51 & Ib103),F24,_F24);
+DL_JK_MS_FF M129_1(_F25,F25,Z4,~(K51 & Ib103),_F24,F24);
 
 wire F23,_F23;
-DL_JK_MS_FF M129_2(F24,_F24,Z4,~(K51 & Ib102),F23,_F23);
+DL_JK_MS_FF M129_2(_F24,F24,Z4,~(K51 & Ib102),_F23,F23);
 
 wire F22,_F22;
-DL_JK_MS_FF M128_1(F23,_F23,Z4,~(K51 & Ib101),F22,_F22);
+DL_JK_MS_FF M128_1(_F23,F23,Z4,~(K51 & Ib101),_F22,F22);
 
 wire F21,_F21;
-DL_JK_MS_FF M128_2(F22,_F22,Z4,~(K51 & Ib108),F21,_F21);
+DL_JK_MS_FF M128_2(_F22,F22,Z4,~(K51 & Ib108),_F21,F21);
 
 /*page 3.181 Figure 3.73*/
 
