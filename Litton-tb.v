@@ -69,12 +69,16 @@ assign dbg_I={M159.SR,M158.SR,M157.SR,M156.SR,M155.SR};
 assign dbg_A={M154.SR,M153.SR,M152.SR,M151.SR,M150.SR,L10};
 
 reg [39:0]dbg_A_TS,dbg_I_TS;
-reg [15:0]dbg_CR_HB;
+reg [15:0]dbg_CR_C20;
+reg [39:0]dbg_GS_TS,dbg_S_TS,dbg_BI_TS;
 always @(negedge T39) begin
     dbg_I_TS=dbg_I;
     dbg_A_TS=dbg_A[39:0];
-    dbg_CR_HB={dbg_CR,dbg_I[39:32]};
+    dbg_GS_TS=Drum_GS.drum[g_track][g_lbit +:40];
+    dbg_S_TS=Drum_S.drum[g_lbit +:40];
+    dbg_BI_TS=Drum_BI.drum[g_lbit +:40];
 end
+always @(negedge C20) dbg_CR_C20={dbg_CR,dbg_I[39:32]}; 
 
 reg [0:7]Ib;
 wire Ib101,Ib102,Ib103,Ib104,Ib105,Ib106,Ib107,Ib108;
@@ -105,6 +109,7 @@ assign T39=~_T39;
 reg Z1,Z2,Z3;
 reg [6:0]g_adr;
 reg [13:0]g_bit;
+reg [13:0]g_lbit;
 wire _Z1,_Z2,_Z3;
 
 assign _Z1=~Z1;
@@ -113,6 +118,7 @@ initial begin
     g_bit=0;
     #2;
     forever begin
+        g_lbit=g_bit;
         g_bit=g_bit+1;
         if(g_bit>=5120)g_bit=0;
         Z1=1;
